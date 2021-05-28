@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.tabs.TabLayout;
 
+import de.ur.mi.android.demos.mensa.app.data.MensaDataProvider;
+
 /**
  * Diese zentrale Activity der App verbindet die verschiedenen Bereiche der Anwendung. Hier werden
  * die Komponenten der Daten- und UI-Schicht initialisiert und gesteuert. Wir reagieren auf die
@@ -34,7 +36,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initData();
         initUI();
+    }
+
+    private void initData() {
+        MensaDataProvider provider = new MensaDataProvider(getApplicationContext());
+        provider.update();
     }
 
     private void initUI() {
