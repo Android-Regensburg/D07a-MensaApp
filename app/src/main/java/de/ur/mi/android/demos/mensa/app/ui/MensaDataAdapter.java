@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import de.ur.mi.android.demos.mensa.app.R;
 import de.ur.mi.android.demos.mensa.app.data.MensaDish;
 
+/**
+ * Adapter zur Anbindung einer Liste von MensaDish-Objekten an einen RecyclerView
+ */
 public class MensaDataAdapter extends RecyclerView.Adapter<MensaDataViewHolder> {
 
     private ArrayList<MensaDish> currentMenu;

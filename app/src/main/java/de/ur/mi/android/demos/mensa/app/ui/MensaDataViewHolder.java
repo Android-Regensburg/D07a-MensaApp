@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import de.ur.mi.android.demos.mensa.app.R;
 import de.ur.mi.android.demos.mensa.app.data.MensaDish;
 
-
+/**
+ * ViewHolder zur Darstellung eines einzelnen MensaDish-Objektes im UI
+ */
 public class MensaDataViewHolder extends RecyclerView.ViewHolder {
 
     private final TextView dishCategoryText;
@@ -21,6 +23,7 @@ public class MensaDataViewHolder extends RecyclerView.ViewHolder {
         dishNameText = itemView.findViewById(R.id.text_dish_name);
     }
 
+    // Wird vom Adapter aufgerufen, um das übergeben MensaDish in diesem ViewHolder anzuzeigen
     public void bindView(MensaDish dish) {
         dishCategoryText.setText(dish.category.label);
         dishNameText.setText(dish.name);
