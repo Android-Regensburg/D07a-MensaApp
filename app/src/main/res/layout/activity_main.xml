@@ -6,6 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".MainActivity">
 
+    <!-- TabLayout zur Auswahl des Wochentags -->
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout_weekdays"
         android:layout_width="match_parent"
@@ -13,6 +14,9 @@
         android:layout_marginTop="10dp"
         app:layout_constraintTop_toTopOf="parent">
 
+        <!-- Jeder Wochentag wird als TabItem dargestellt. Wir geben nur den anzuzeigenden Text an
+        und Android kümmert sich um die restliche Darstellung, inkl. verschiedener Erscheinungsbilder
+        für ausgewählte und nicht-ausgewählte Elemente -->
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tab_item_monday"
             android:layout_width="wrap_content"
@@ -45,7 +49,12 @@
 
     </com.google.android.material.tabs.TabLayout>
 
-
+    <!-- In diesem RecyclerView werden die Speisen für den aktuell ausgewählten Wochentag angezeigt.
+    Einzelne Items werden über ViewHolder dargestellt, die als Grundlage für den eigenen View das in
+    card_dish_item.xml definierte Layout verwenden. Adapter und ViewHolder werden von uns implementiert.
+    Vergessen Sie bei der Verwendung des RecyclerView nicht das Setzen des LayoutMangers hier oder im
+    Java-Code: Ansonsten werden keine Inhalte angezeigt, da das RecyclerView sonst nicht weiß, "wie"
+    es die von Adapter bzw. ViewHolder erhaltenen Views darstellen soll. -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/view_current_menu"
         android:layout_width="match_parent"
