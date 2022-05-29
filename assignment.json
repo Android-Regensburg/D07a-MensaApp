@@ -1,0 +1,11 @@
+{
+    "title": "Mensa-App",
+    "abstract": "In dieser Aufgabe implementieren Sie eine App, die Ihnen Speisepläne verschiedenster Hochschulmensen anzeigen kann. Die Daten dazu werden von einem externen Server via HTTP-Anfrage bezogen und in die bestehende App integriert.",
+    "hasStarterCode": true,
+    "hasSolutionCode": true,
+    "hasSimpleSolutionCode": false,
+    "hasAdvancedSolutionCode": false,
+    "solutionComment": "Lösungsvorschlag",
+    "advancedSolutionComment": "", 
+    "solutionAvailableOn": "2022-06-13"
+}
