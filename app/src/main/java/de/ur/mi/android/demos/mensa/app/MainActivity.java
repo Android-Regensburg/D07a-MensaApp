@@ -1,5 +1,6 @@
 package de.ur.mi.android.demos.mensa.app;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,7 +16,7 @@ import de.ur.mi.android.demos.mensa.app.data.MensaDish;
 import de.ur.mi.android.demos.mensa.app.data.helper.Weekday;
 import de.ur.mi.android.demos.mensa.app.ui.MensaDataAdapter;
 
-public class MainActivity extends AppCompatActivity implements MensaDataListener {
+public class MainActivity extends Activity implements MensaDataListener {
 
     private MensaDataProvider provider;
     private MensaDataAdapter adapter;

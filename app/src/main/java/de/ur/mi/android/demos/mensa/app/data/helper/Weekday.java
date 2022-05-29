@@ -36,7 +36,7 @@ public enum Weekday {
     // aufgerufen, wird der letzte Werktag der laufenden Woche (Freitag) zurückgegeben
     public static Weekday currentOrNearest() {
         DayOfWeek today = LocalDate.now().getDayOfWeek();
-        if (today.ordinal() < 6) {
+        if (today.ordinal() < 5) {
             return Weekday.values()[today.ordinal()];
         }
         return Weekday.FRIDAY;
