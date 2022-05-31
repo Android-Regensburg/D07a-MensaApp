@@ -16,8 +16,8 @@ import de.ur.mi.android.demos.mensa.app.data.helper.Places;
 import de.ur.mi.android.demos.mensa.app.data.helper.Weekday;
 
 /**
- * Diese Klasse repräsentiert einen einmalig verwendbaren Request an die HTTP-API um den vollständigen
- * Speiseplan der laufenden Woche herunterzuladen und als Array von JSON-Objekten zurückzugeben. Hier
+ * Diese Klasse repräsentiert einen Request an die HTTP-API um den vollständigen Speiseplan
+ * der laufenden Woche herunterzuladen und als Array von JSON-Objekten zurückzugeben. Hier
  * wird das Volley-Framework verwendet um die fünf notwendigen HTTP-Anfragen an den Server zu stellen.
  * Die einzelnen Anworten des Servers werden in einem JSONArray zwischengespeichert. Durch das Zählen der
  * positiven und negativen Antworten des Servers kann festgestellt werden, wenn die letzte notwendige
@@ -33,7 +33,7 @@ public class WeeklyMenuRequest implements Response.Listener<String>, Response.Er
     // Listener, der nach Abschluss aller Anfragen über das Ergebnis (Liste der erhaltenen Speisen) informiert wird
     private final WeeklyMenuRequestListener listener;
     // JSONArray zum Speichern der Inhalte der einzelnen Server-Antworten
-    private final JSONArray results;
+    private JSONArray results;
     // Gibt an, ob dieser Request bereits gestartet wurde
     private boolean wasStarted;
     // Zählt, wie viele der Anfragen an den API-Server bereits beantwortet wurden
@@ -69,8 +69,14 @@ public class WeeklyMenuRequest implements Response.Listener<String>, Response.Er
         wasStarted = true;
     }
 
+    /*
+        Diese Methode kann verwendet werden, wenn aktuell keine Anfrage läuft, eine neue Anfrage für den
+        übergebenen Ort zu starten.
+        Die Methode wird daher aufgerufen, wenn im Drawer Menü ein Eintrag angeklickt wird.
+        Nach Abschluss der Anfrage wird der Listener informiert.
+     */
     public void restartForNewPlace(Places place) {
-        if(wasStarted == true && finished == true) {
+        if(wasStarted && finished) {
             finished = false;
             // Hier erstellen wir die Queue, in der wir die fünf notwendigen Anfragen (Montag bis Freitag) sammeln
             RequestQueue queue = Volley.newRequestQueue(context);
@@ -84,7 +90,8 @@ public class WeeklyMenuRequest implements Response.Listener<String>, Response.Er
     }
 
     /**
-     * Erstellt einen StringeRequest (Volley) für das Erfragen der Speiseplandaten für den übergebenen Wochentag
+     * Erstellt einen StringeRequest (Volley) für das Erfragen der Speiseplandaten für den übergebenen Wochentag.
+     * Standardmäßig wird die Uni Regensburg verwendet.
      *
      * @param weekday         Wochentag, dessen Daten erfragt werden sollen
      * @param successListener Listener für den erfolgreichen Abschluss der Anfrage
@@ -97,20 +104,38 @@ public class WeeklyMenuRequest implements Response.Listener<String>, Response.Er
         return new StringRequest(Request.Method.GET, url, successListener, errorListener);
     }
 
+    /**
+     * Erstellt einen StringeRequest (Volley) für das Erfragen der Speiseplandaten für den übergebenen Wochentag
+     * und den übergebenen Ort
+     *
+     * @param weekday         Wochentag, dessen Daten erfragt werden sollen
+     * @param place           Ort für dessen Mensa Daten abgefragt werden sollen.
+     * @param successListener Listener für den erfolgreichen Abschluss der Anfrage
+     * @param errorListener   Listener für Fehler während der Anfrage
+     * @return Der vorbereitete Request (noch nicht gestartet)
+     */
     private StringRequest createVolleyRequestForWeekdayAndPlace(Weekday weekday, Places place, Response.Listener<String> successListener, Response.ErrorListener errorListener) {
         String url = API_URL.replace("$DAY", weekday.shortName);
         url = url.replace("$PLACE", place.code);
         return new StringRequest(Request.Method.GET, url, successListener, errorListener);
     }
 
+
     private void notifyListenerIfReady() {
         if (responseCounter == Weekday.values().length) {
+            finished = true;
             listener.onDataRequestFinished(results);
         }
     }
 
+    /*
+        Wenn eine Anfrage an die API beantwortet wurde wird versucht den String in ein JSON-Array umzuwandeln.
+        Sobald für alle Wochenenden ein Array erzeugt werden konnte wird er Listener informiert, dass
+        neue Daten verfügbar sind.
+     */
     @Override
     public void onResponse(String response) {
+        this.results = new JSONArray();
         // Wenn eine der Serveranfragen beantwortet wurde ...
         try {
             // .. versuchen wir die JSON-formatierten Speisen aus dem erhaltenen Array auszulesen
@@ -124,7 +149,6 @@ public class WeeklyMenuRequest implements Response.Listener<String>, Response.Er
         } finally {
             // Wir zählen diese Antwort ...
             responseCounter++;
-            finished = true;
             // ... und prüfen, ob nun alle Anfragen beantwortet wurden und wir den Listener über das Gesamtergebnis informieren können
             notifyListenerIfReady();
         }
@@ -134,7 +158,6 @@ public class WeeklyMenuRequest implements Response.Listener<String>, Response.Er
     public void onErrorResponse(VolleyError error) {
         // Wir zählen auch die fehlerhaften Rückgaben, da unsere App sonst "ewig" auf den Abschluss ausstehender Request warten würde
         responseCounter++;
-        finished = true;
         notifyListenerIfReady();
     }
 

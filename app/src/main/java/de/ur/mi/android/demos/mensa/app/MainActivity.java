@@ -27,8 +27,11 @@ import de.ur.mi.android.demos.mensa.app.ui.MensaDataAdapter;
 
 public class MainActivity extends Activity implements MensaDataListener, NavigationView.OnNavigationItemSelectedListener {
 
+    // Der MensaDataProvider erlaubt es Menüs aus dem Internet abzufragen und in das UI einzubinden.
     private MensaDataProvider provider;
+    // Der MensaAdapter verbindet das UI mit der internen Repräsentation des Menüs
     private MensaDataAdapter adapter;
+    // Das Tablayout bietet die Auswahl der Wochentage an.
     private TabLayout daySelector;
 
     @Override
@@ -41,11 +44,18 @@ public class MainActivity extends Activity implements MensaDataListener, Navigat
 
     private void initUI() {
         setContentView(R.layout.activity_main);
+        // Der MensaDataAdapter wird an den RecylerView angeschlossen.
         RecyclerView viewForCurrentMenu = findViewById(R.id.view_current_menu);
         adapter = new MensaDataAdapter();
         viewForCurrentMenu.setAdapter(adapter);
+        // Auf dem Tablayout wird ein EventListener registriert.
         daySelector = findViewById(R.id.tab_layout_weekdays);
         daySelector.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+
+            /*
+             *  Wird ein Wochentag im Tablayout ausgewählt, so wird ein entsprechendes Element des
+             *  Weekday Enums erzuegt und das Menü für diesen Tag abgefragt.
+             */
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 Weekday selectedDay = Weekday.values()[tab.getPosition()];
@@ -62,16 +72,22 @@ public class MainActivity extends Activity implements MensaDataListener, Navigat
         });
     }
 
+    // Die Activity registriert sich als Listener auf Klicks im NavigationDrawer
     private void setNavigationViewListener() {
         NavigationView nav = findViewById(R.id.nav_view);
         nav.setNavigationItemSelectedListener(this);
     }
 
+    // Der DataProvider wird initialisiert und die Daten von der API angefragt.
     private void initData() {
         provider = new MensaDataProvider(getApplicationContext(), this);
         provider.update();
     }
 
+    /*
+     *   Bei Aufruf dieser Methode werden die Menüelemente, die mit dem übergebenen Wochentag
+     *   korrespondieren an den Adapter übergeben und angezeigt.
+     */
     private void showMenuForDay(Weekday day) {
         if (day == null) {
             return;
@@ -80,25 +96,24 @@ public class MainActivity extends Activity implements MensaDataListener, Navigat
         adapter.setMenu(menuForSelectedDay);
     }
 
+    // Wenn neue Mensadaten verfügbar sind wird der aktuelle Wochentag ausgewählt.
     @Override
     public void onMensaDataUpdated() {
         daySelector.selectTab(daySelector.getTabAt(Weekday.currentOrNearest().ordinal()));
     }
 
+    // Diese Methode wird aufgerufen wenn eine andere Mensa gewählt wird.
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
+        // Das gewählte Element wird markiert.
         item.setChecked(true);
 
-        if(id == R.id.regensburg_menu) {
-            Log.d("Menu", "Uni Regensburg Clicked");
-        } else if(id == R.id.oth_menu) {
-            Log.d("Menu", "OTH Regensburg Clicked");
-        }
-
+        // Von der API werden Daten für diesen Ort angefragt.
         provider.getMenuForPlace(Places.fromItemId(id));
 
+        // Der Drawer wird wieder geschlossen
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
 

@@ -13,11 +13,18 @@ import de.ur.mi.android.demos.mensa.app.data.api.WeeklyMenuRequestListener;
 import de.ur.mi.android.demos.mensa.app.data.helper.Places;
 import de.ur.mi.android.demos.mensa.app.data.helper.Weekday;
 
+/**
+ * Diese Klasse kapselt die Zugriffe auf die API und stellt die Daten der restlichen Anwendung
+ * bereit.
+ */
 public class MensaDataProvider implements WeeklyMenuRequestListener {
 
     private final Context context;
+    // Wird informiert, wenn neue Daten geladen wurden.
     private final MensaDataListener listener;
+    // Beinhaltet alle Gerichte die gerade angeboten werden.
     private ArrayList<MensaDish> currentMenu;
+    // Ein Request Objekt wird genutzt um Anfragen an die API zu stellen.
     private WeeklyMenuRequest task;
 
     public MensaDataProvider(Context context, MensaDataListener listener) {
@@ -26,6 +33,7 @@ public class MensaDataProvider implements WeeklyMenuRequestListener {
         this.currentMenu = new ArrayList<>();
     }
 
+    // Wird aufgerufen, um die neuesten Daten aus der API zu laden.
     public void update() {
         task = new WeeklyMenuRequest(context, this);
         try {
@@ -35,11 +43,17 @@ public class MensaDataProvider implements WeeklyMenuRequestListener {
         }
     }
 
+    // Wird aufgerufen, um neue Daten für einen neuen Ort aus der API zu laden.
     public void getMenuForPlace(Places place) {
-        // currentMenu = new ArrayList<>();
         task.restartForNewPlace(place);
     }
 
+    /**
+     * Gibt alle Gerichte zurück, deren Datum dem übergebenen Tag entsprechen.
+     *
+     * @param day der Wochentag für den Gerichte zurückgegeben werden sollen
+     * @return ArrayList mit allen Gerichten, die am übergebenen Tag angeboten werden.
+      */
     public ArrayList<MensaDish> getMenuForDay(Weekday day) {
         ArrayList<MensaDish> menu = new ArrayList<>();
         for (MensaDish dish : currentMenu) {
@@ -50,6 +64,11 @@ public class MensaDataProvider implements WeeklyMenuRequestListener {
         return menu;
     }
 
+    /*
+        Wenn Daten von der API geladen wurden wird die ArrayList der aktuell gespeicherten Gerichte
+        ersetzt. Dazu werden aus den geladenen JSONs Objekte vom Typ Dish erzeugt. Nach Abschluss
+        aller Umwandlungen wird der Listener informiert, dass neue Gerichte angezeigt werden können.
+     */
     @Override
     public void onDataRequestFinished(JSONArray results) {
         currentMenu = new ArrayList<>();

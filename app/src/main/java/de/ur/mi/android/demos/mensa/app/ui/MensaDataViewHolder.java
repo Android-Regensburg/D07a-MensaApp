@@ -23,7 +23,11 @@ public class MensaDataViewHolder extends RecyclerView.ViewHolder {
         dishNameText = itemView.findViewById(R.id.text_dish_name);
     }
 
-    // Wird vom Adapter aufgerufen, um das übergeben MensaDish in diesem ViewHolder anzuzeigen
+    /*
+     *   Wird vom Adapter aufgerufen, um das übergeben MensaDish in diesem ViewHolder anzuzeigen.
+     *   Dabei werden die Views des Layouts eines Eintrags mit den entsprechenden Texten (Kategorie
+     *   und Name des Gerichts) befüllt.
+     */
     public void bindView(MensaDish dish) {
         dishCategoryText.setText(dish.category.label);
         dishNameText.setText(dish.name);
