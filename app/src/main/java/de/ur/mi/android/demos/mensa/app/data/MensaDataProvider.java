@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import de.ur.mi.android.demos.mensa.app.data.api.RequestAlreadyStartedException;
 import de.ur.mi.android.demos.mensa.app.data.api.WeeklyMenuRequest;
 import de.ur.mi.android.demos.mensa.app.data.api.WeeklyMenuRequestListener;
+import de.ur.mi.android.demos.mensa.app.data.helper.Places;
 import de.ur.mi.android.demos.mensa.app.data.helper.Weekday;
 
 public class MensaDataProvider implements WeeklyMenuRequestListener {
@@ -17,6 +18,7 @@ public class MensaDataProvider implements WeeklyMenuRequestListener {
     private final Context context;
     private final MensaDataListener listener;
     private ArrayList<MensaDish> currentMenu;
+    private WeeklyMenuRequest task;
 
     public MensaDataProvider(Context context, MensaDataListener listener) {
         this.context = context;
@@ -25,12 +27,17 @@ public class MensaDataProvider implements WeeklyMenuRequestListener {
     }
 
     public void update() {
-        WeeklyMenuRequest task = new WeeklyMenuRequest(context, this);
+        task = new WeeklyMenuRequest(context, this);
         try {
             task.start();
         } catch (RequestAlreadyStartedException e) {
             e.printStackTrace();
         }
+    }
+
+    public void getMenuForPlace(Places place) {
+        // currentMenu = new ArrayList<>();
+        task.restartForNewPlace(place);
     }
 
     public ArrayList<MensaDish> getMenuForDay(Weekday day) {

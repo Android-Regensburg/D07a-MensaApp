@@ -12,6 +12,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import de.ur.mi.android.demos.mensa.app.data.helper.Places;
 import de.ur.mi.android.demos.mensa.app.data.helper.Weekday;
 
 /**
@@ -25,7 +26,7 @@ import de.ur.mi.android.demos.mensa.app.data.helper.Weekday;
  */
 public class WeeklyMenuRequest implements Response.Listener<String>, Response.ErrorListener {
 
-    private static final String API_URL = "https://mensa.software-engineering.education/mensa/uni/$DAY";
+    private static final String API_URL = "https://mensa.software-engineering.education/mensa/$PLACE/$DAY";
 
     // Kontext der App, der zur Verwendung des Volley-Frameworks benötigt wird
     private final Context context;
@@ -38,12 +39,18 @@ public class WeeklyMenuRequest implements Response.Listener<String>, Response.Er
     // Zählt, wie viele der Anfragen an den API-Server bereits beantwortet wurden
     private int responseCounter;
 
+    private boolean finished;
+
+    private String currentPlace;
+
     public WeeklyMenuRequest(Context context, WeeklyMenuRequestListener listener) {
         this.context = context;
         this.listener = listener;
         this.results = new JSONArray();
         this.wasStarted = false;
+        this.finished = false;
         this.responseCounter = 0;
+        this.currentPlace = Places.UNI_REGENSBURG.getCode();
     }
 
     public void start() throws RequestAlreadyStartedException {
@@ -62,6 +69,20 @@ public class WeeklyMenuRequest implements Response.Listener<String>, Response.Er
         wasStarted = true;
     }
 
+    public void restartForNewPlace(Places place) {
+        if(wasStarted == true && finished == true) {
+            finished = false;
+            // Hier erstellen wir die Queue, in der wir die fünf notwendigen Anfragen (Montag bis Freitag) sammeln
+            RequestQueue queue = Volley.newRequestQueue(context);
+            for (Weekday day : Weekday.values()) {
+                StringRequest request = createVolleyRequestForWeekdayAndPlace(day, place, this, this);
+                queue.add(request);
+            }
+            // Hier wird die Queue gestartet: Volley beginnt mit der Ausführung der vorbereiteten Anfragen
+            queue.start();
+        }
+    }
+
     /**
      * Erstellt einen StringeRequest (Volley) für das Erfragen der Speiseplandaten für den übergebenen Wochentag
      *
@@ -72,6 +93,13 @@ public class WeeklyMenuRequest implements Response.Listener<String>, Response.Er
      */
     private StringRequest createVolleyRequestForWeekday(Weekday weekday, Response.Listener<String> successListener, Response.ErrorListener errorListener) {
         String url = API_URL.replace("$DAY", weekday.shortName);
+        url = url.replace("$PLACE", Places.UNI_REGENSBURG.code);
+        return new StringRequest(Request.Method.GET, url, successListener, errorListener);
+    }
+
+    private StringRequest createVolleyRequestForWeekdayAndPlace(Weekday weekday, Places place, Response.Listener<String> successListener, Response.ErrorListener errorListener) {
+        String url = API_URL.replace("$DAY", weekday.shortName);
+        url = url.replace("$PLACE", place.code);
         return new StringRequest(Request.Method.GET, url, successListener, errorListener);
     }
 
@@ -96,6 +124,7 @@ public class WeeklyMenuRequest implements Response.Listener<String>, Response.Er
         } finally {
             // Wir zählen diese Antwort ...
             responseCounter++;
+            finished = true;
             // ... und prüfen, ob nun alle Anfragen beantwortet wurden und wir den Listener über das Gesamtergebnis informieren können
             notifyListenerIfReady();
         }
@@ -105,6 +134,7 @@ public class WeeklyMenuRequest implements Response.Listener<String>, Response.Er
     public void onErrorResponse(VolleyError error) {
         // Wir zählen auch die fehlerhaften Rückgaben, da unsere App sonst "ewig" auf den Abschluss ausstehender Request warten würde
         responseCounter++;
+        finished = true;
         notifyListenerIfReady();
     }
 

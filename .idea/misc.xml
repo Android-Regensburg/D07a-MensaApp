@@ -4,7 +4,11 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Uni_Material/6_SS22/Android Tutor/Uebungsaufgaben/Ueberarbeitung Mensa App/U07-MensaApp/app/src/main/res/layout/activity_main.xml" value="0.2674772036474164" />
+        <entry key="..\:/Uni_Material/6_SS22/Android Tutor/Uebungsaufgaben/Ueberarbeitung Mensa App/U07-MensaApp/app/src/main/res/layout/app_bar_main.xml" value="0.55" />
         <entry key="..\:/Uni_Material/6_SS22/Android Tutor/Uebungsaufgaben/Ueberarbeitung Mensa App/U07-MensaApp/app/src/main/res/layout/card_dish_item.xml" value="0.2674772036474164" />
+        <entry key="..\:/Uni_Material/6_SS22/Android Tutor/Uebungsaufgaben/Ueberarbeitung Mensa App/U07-MensaApp/app/src/main/res/layout/fragment_oth_regensburg.xml" value="0.5359375" />
+        <entry key="..\:/Uni_Material/6_SS22/Android Tutor/Uebungsaufgaben/Ueberarbeitung Mensa App/U07-MensaApp/app/src/main/res/menu/burgermenu.xml" value="0.55" />
+        <entry key="..\:/Uni_Material/6_SS22/Android Tutor/Uebungsaufgaben/Ueberarbeitung Mensa App/U07-MensaApp/app/src/main/res/menu/navigation_drawer.xml" value="0.55" />
       </map>
     </option>
   </component>
