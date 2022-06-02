@@ -14,7 +14,8 @@ import de.ur.mi.android.demos.mensa.app.R;
 public enum Places {
 
     UNI_REGENSBURG("uni"),
-    OTH_REGENSBURG("oth");
+    OTH_REGENSBURG("oth"),
+    UNI_PASSAU("passau");
 
     public final String code;
 
@@ -31,6 +32,8 @@ public enum Places {
             return Places.UNI_REGENSBURG;
         } else if (name.equals("OTH Regensburg")) {
             return Places.OTH_REGENSBURG;
+        } else if (name.equals("Uni Passau")) {
+            return Places.UNI_PASSAU;
         }
 
         return Places.UNI_REGENSBURG;
@@ -41,6 +44,8 @@ public enum Places {
             return Places.UNI_REGENSBURG;
         } else if (id == R.id.oth_menu) {
             return Places.OTH_REGENSBURG;
+        } else if(id == R.id.passau_menu) {
+            return Places.UNI_PASSAU;
         }
 
         return Places.UNI_REGENSBURG;

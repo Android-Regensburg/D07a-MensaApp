@@ -1,6 +1,7 @@
 package de.ur.mi.android.demos.mensa.app.data;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;

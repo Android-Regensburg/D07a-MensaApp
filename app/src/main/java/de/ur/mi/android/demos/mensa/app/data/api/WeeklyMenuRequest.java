@@ -1,6 +1,7 @@
 package de.ur.mi.android.demos.mensa.app.data.api;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -124,6 +125,7 @@ public class WeeklyMenuRequest implements Response.Listener<String>, Response.Er
     private void notifyListenerIfReady() {
         if (responseCounter == Weekday.values().length) {
             finished = true;
+            responseCounter = 0;
             listener.onDataRequestFinished(results);
         }
     }
@@ -135,7 +137,10 @@ public class WeeklyMenuRequest implements Response.Listener<String>, Response.Er
      */
     @Override
     public void onResponse(String response) {
-        this.results = new JSONArray();
+        if (responseCounter == 0) {
+            this.results = new JSONArray();
+        }
+
         // Wenn eine der Serveranfragen beantwortet wurde ...
         try {
             // .. versuchen wir die JSON-formatierten Speisen aus dem erhaltenen Array auszulesen
@@ -156,6 +161,9 @@ public class WeeklyMenuRequest implements Response.Listener<String>, Response.Er
 
     @Override
     public void onErrorResponse(VolleyError error) {
+        if (responseCounter == 0) {
+            this.results = new JSONArray();
+        }
         // Wir zählen auch die fehlerhaften Rückgaben, da unsere App sonst "ewig" auf den Abschluss ausstehender Request warten würde
         responseCounter++;
         notifyListenerIfReady();

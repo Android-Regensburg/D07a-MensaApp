@@ -99,7 +99,9 @@ public class MainActivity extends Activity implements MensaDataListener, Navigat
     // Wenn neue Mensadaten verfügbar sind wird der aktuelle Wochentag ausgewählt.
     @Override
     public void onMensaDataUpdated() {
-        daySelector.selectTab(daySelector.getTabAt(Weekday.currentOrNearest().ordinal()));
+        Weekday currentDay = Weekday.currentOrNearest();
+        daySelector.selectTab(daySelector.getTabAt(currentDay.ordinal()));
+        showMenuForDay(currentDay);
     }
 
     // Diese Methode wird aufgerufen wenn eine andere Mensa gewählt wird.
