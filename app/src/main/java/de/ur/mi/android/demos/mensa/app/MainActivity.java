@@ -8,9 +8,16 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
+
+import de.ur.mi.android.demos.mensa.app.data.helper.Weekday;
 import de.ur.mi.android.demos.mensa.app.ui.MensaDataAdapter;
 
 public class MainActivity extends Activity implements NavigationView.OnNavigationItemSelectedListener {
+
+    // Mit dieser URL können Anfragen an die API gestellt werden, dazu müssen $PLACE und $DAY durch passende
+    // Texte ausgetauscht werden.
+    // Sie dürfen/sollen diese URL an eine passendere Stelle verschieben!
+    private static final String API_URL = "https://mensa.software-engineering.education/mensa/$PLACE/$DAY";
 
     // Der MensaAdapter verbindet das UI mit der internen Repräsentation des Menüs
     private MensaDataAdapter adapter;
@@ -27,6 +34,22 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
     private void initUI() {
         setContentView(R.layout.activity_main);
         // IHR CODE
+
+        daySelector = findViewById(R.id.tab_layout_weekdays);
+        daySelector.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            // Die onTabSelected-Methode wird aufgerufen, wenn ein Wochentag im TabLayout geklickt wird.
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
+        });
     }
 
     // Die Activity registriert sich als Listener auf Klicks im NavigationDrawer

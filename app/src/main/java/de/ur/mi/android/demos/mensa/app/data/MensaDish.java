@@ -17,7 +17,7 @@ public class MensaDish {
     // Kategorie (Hauptspeise, Beilage oder Dessert)
     public final Category category;
 
-    private MensaDish(String name, Weekday onDay, Category category) {
+    public MensaDish(String name, Weekday onDay, Category category) {
         this.name = name;
         this.onDay = onDay;
         this.category = category;
