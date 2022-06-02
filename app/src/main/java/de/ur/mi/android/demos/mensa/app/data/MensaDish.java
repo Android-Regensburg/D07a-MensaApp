@@ -26,17 +26,10 @@ public class MensaDish {
     /**
      * Versucht, aus dem übergebenen JSONObject die notwendigen Werte zum Erstellen einer MensaDish-
      * Instanz auszulesen und ein entsprechendes Objekt zurückzugeben.
-     *
-     * @param object Das JSONObject, in dem die Informationen für das neu zu erstellende MensaDish-Objekt enthalten sind
-     * @return Das MensaDish-Objekt, das die Informationen aus dem übergebenen JSON-Objekt repräsentiert
-     * @throws JSONException
      */
     public static MensaDish fromJSONObject(JSONObject object) throws JSONException {
-        String name = object.getString("name");
-        String dayFromJSON = object.getString("day");
-        Weekday onDay = Weekday.fromShortName(dayFromJSON);
-        String categoryFromJSON = object.getString("category");
-        Category category = Category.fromValue(categoryFromJSON);
-        return new MensaDish(name, onDay, category);
+        // Implementieren Sie hier das Auslesen der Daten aus dem JSON Objekt.
+        // Erzeugen Sie mit den ausgelesenen Daten ein neues Objekt der Klasse MensaDish und geben Sie dieses zurück.
+        return null;
     }
 }
