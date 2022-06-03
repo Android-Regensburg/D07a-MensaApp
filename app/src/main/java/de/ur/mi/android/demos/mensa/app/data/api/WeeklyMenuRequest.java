@@ -7,6 +7,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -25,7 +26,7 @@ import de.ur.mi.android.demos.mensa.app.data.helper.Weekday;
  * Antwort des Server eingegangen ist. Achtung: Das funktioniert nur deshalb sicher, da die onReponse-Methode
  * der Volley-Listener automatisch im Main Thread (UI Thread) der Anwendung ausgeführt wird!
  */
-public class WeeklyMenuRequest implements Response.Listener<String>, Response.ErrorListener {
+public class WeeklyMenuRequest implements Response.Listener<JSONArray>, Response.ErrorListener {
 
     private static final String API_URL = "https://mensa.software-engineering.education/mensa/$PLACE/$DAY";
 
@@ -58,7 +59,7 @@ public class WeeklyMenuRequest implements Response.Listener<String>, Response.Er
         // Hier erstellen wir die Queue, in der wir die fünf notwendigen Anfragen (Montag bis Freitag) sammeln
         RequestQueue queue = Volley.newRequestQueue(context);
         for (Weekday day : Weekday.values()) {
-            StringRequest request = createVolleyRequestForWeekdayAndPlace(day, currentPlace, this, this);
+            JsonArrayRequest request = createVolleyRequestForWeekdayAndPlace(day, currentPlace, this, this);
             queue.add(request);
         }
         // Hier wird die Queue gestartet: Volley beginnt mit der Ausführung der vorbereiteten Anfragen
@@ -77,10 +78,10 @@ public class WeeklyMenuRequest implements Response.Listener<String>, Response.Er
      * @param errorListener   Listener für Fehler während der Anfrage
      * @return Der vorbereitete Request (noch nicht gestartet)
      */
-    private StringRequest createVolleyRequestForWeekdayAndPlace(Weekday weekday, Places place, Response.Listener<String> successListener, Response.ErrorListener errorListener) {
+    private JsonArrayRequest createVolleyRequestForWeekdayAndPlace(Weekday weekday, Places place, Response.Listener<JSONArray> successListener, Response.ErrorListener errorListener) {
         String url = API_URL.replace("$DAY", weekday.shortName);
         url = url.replace("$PLACE", place.code);
-        return new StringRequest(Request.Method.GET, url, successListener, errorListener);
+        return new JsonArrayRequest(url, successListener, errorListener);
     }
 
 
@@ -97,7 +98,7 @@ public class WeeklyMenuRequest implements Response.Listener<String>, Response.Er
         neue Daten verfügbar sind.
      */
     @Override
-    public void onResponse(String response) {
+    public void onResponse(JSONArray response) {
         if (responseCounter == 0) {
             this.results = new JSONArray();
         }
@@ -105,10 +106,11 @@ public class WeeklyMenuRequest implements Response.Listener<String>, Response.Er
         // Wenn eine der Serveranfragen beantwortet wurde ...
         try {
             // .. versuchen wir die JSON-formatierten Speisen aus dem erhaltenen Array auszulesen
-            JSONArray resultsForOneDay = new JSONArray(response);
-            for (int i = 0; i < resultsForOneDay.length(); i++) {
+            // JSONArray resultsForOneDay = new JSONArray(response);
+            Log.d("Mensa", response.toString());
+            for (int i = 0; i < response.length(); i++) {
                 // ... und als einzelne JSONObjekte in dem zentralen JSONArray zu speichern
-                results.put(resultsForOneDay.getJSONObject(i));
+                results.put(response.getJSONObject(i));
             }
         } catch (JSONException e) {
             e.printStackTrace();
