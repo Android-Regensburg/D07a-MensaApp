@@ -14,6 +14,9 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import de.ur.mi.android.demos.mensa.app.data.MensaDataListener;
 import de.ur.mi.android.demos.mensa.app.data.MensaDataProvider;
@@ -33,6 +36,8 @@ public class MainActivity extends Activity implements MensaDataListener, Navigat
 
     private Places currentPlace;
 
+    private ScheduledExecutorService executor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +54,7 @@ public class MainActivity extends Activity implements MensaDataListener, Navigat
 
         // Der MensaDataAdapter wird an den RecylerView angeschlossen.
         RecyclerView viewForCurrentMenu = findViewById(R.id.view_current_menu);
-        adapter = new MensaDataAdapter();
+        adapter = new MensaDataAdapter(getBaseContext());
         viewForCurrentMenu.setAdapter(adapter);
         // Auf dem Tablayout wird ein EventListener registriert.
         daySelector = findViewById(R.id.tab_layout_weekdays);
@@ -110,8 +115,32 @@ public class MainActivity extends Activity implements MensaDataListener, Navigat
     public void onMensaDataUpdated() {
         Weekday currentDay = Weekday.currentOrNearest();
         daySelector.selectTab(daySelector.getTabAt(currentDay.ordinal()));
-        showMenuForDay(currentDay);
         setSubtitle(currentPlace);
+
+        // Zu Demonstrationszwecken wird die Anzeige der geladenen Informationen im UI um 2 Sekunden verzögert.
+        // Damit dieser Delay unser UI nicht blockiert, verwenden wir einen Executor.
+        executor = Executors.newSingleThreadScheduledExecutor();
+        executor.scheduleWithFixedDelay(new Runnable() {
+            @Override
+            public void run() {
+                removeLoadingAndUpdate();
+            }
+        }, 2, 2, TimeUnit.SECONDS);
+    }
+
+    /*
+        Diese Methode wird (auf einem anderen Thread) aufgerufen, wenn Daten geladen wurden
+        und der Delay abgelaufen ist. Dann wird das angezeigte Menü (auf dem UI-Thread) aktualisiert.
+     */
+    private void removeLoadingAndUpdate() {
+        Weekday currentDay = Weekday.currentOrNearest();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                showMenuForDay(currentDay);
+            }
+        });
+        executor.shutdownNow();
     }
 
     // Diese Methode wird aufgerufen wenn eine andere Mensa gewählt wird.

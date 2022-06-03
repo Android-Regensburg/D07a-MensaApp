@@ -1,5 +1,6 @@
 package de.ur.mi.android.demos.mensa.app.ui;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +21,11 @@ public class MensaDataAdapter extends RecyclerView.Adapter<MensaDataViewHolder> 
     // In dieser ArrayList werden die aktuell anzuzeigenden Gerichte gespeichert.
     private ArrayList<MensaDish> currentMenu;
 
-    public MensaDataAdapter() {
+    private Context context;
+
+    public MensaDataAdapter(Context context) {
         currentMenu = new ArrayList<>();
+        this.context = context;
     }
 
     // Mit dieser Methode kann die Liste der aktuellen Gerichte ausgetauscht werden.
@@ -41,13 +45,20 @@ public class MensaDataAdapter extends RecyclerView.Adapter<MensaDataViewHolder> 
     // Diese Methode wird automatisch aufgerufen und fügt ein Gericht in die Liste ein.
     @Override
     public void onBindViewHolder(@NonNull MensaDataViewHolder holder, int position) {
-        MensaDish dish = currentMenu.get(position);
-        holder.bindView(dish);
+        if (currentMenu.size() > 0) {
+            MensaDish dish = currentMenu.get(position);
+            holder.bindView(dish, context);
+            return;
+        }
+
+        // Anstatt im Falle einer leeren Liste nichts anzuzeigen, zeigen wir einen Ladebalken an.
+        holder.bindView(null, context);
     }
 
     // Informiert Android wie viele Karten anzuzeigen sind.
     @Override
     public int getItemCount() {
+        if (currentMenu.size() == 0) return 1;
         return currentMenu.size();
     }
 }

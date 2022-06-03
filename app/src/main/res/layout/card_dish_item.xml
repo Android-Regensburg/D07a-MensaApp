@@ -36,4 +36,10 @@
             android:fontFamily="sans-serif-medium"
             card_view:layout_constraintTop_toBottomOf="@+id/text_dish_category" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal" />
 </androidx.cardview.widget.CardView>
