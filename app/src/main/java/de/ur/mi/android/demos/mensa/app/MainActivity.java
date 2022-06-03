@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,9 +35,12 @@ public class MainActivity extends Activity implements MensaDataListener, Navigat
     // Das Tablayout bietet die Auswahl der Wochentage an.
     private TabLayout daySelector;
 
+    private Places currentPlace;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        currentPlace = Places.UNI_REGENSBURG;
         initUI();
         initData();
         setNavigationViewListener();
@@ -44,6 +48,9 @@ public class MainActivity extends Activity implements MensaDataListener, Navigat
 
     private void initUI() {
         setContentView(R.layout.activity_main);
+
+        setSubtitle(currentPlace);
+
         // Der MensaDataAdapter wird an den RecylerView angeschlossen.
         RecyclerView viewForCurrentMenu = findViewById(R.id.view_current_menu);
         adapter = new MensaDataAdapter();
@@ -70,6 +77,12 @@ public class MainActivity extends Activity implements MensaDataListener, Navigat
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
+    }
+
+
+    private void setSubtitle(Places place) {
+        TextView subtitle = findViewById(R.id.text_content_description);
+        subtitle.setText(subtitle.getText().toString().replace("$MENSA", place.getLabel()));
     }
 
     // Die Activity registriert sich als Listener auf Klicks im NavigationDrawer
@@ -102,6 +115,7 @@ public class MainActivity extends Activity implements MensaDataListener, Navigat
         Weekday currentDay = Weekday.currentOrNearest();
         daySelector.selectTab(daySelector.getTabAt(currentDay.ordinal()));
         showMenuForDay(currentDay);
+        setSubtitle(currentPlace);
     }
 
     // Diese Methode wird aufgerufen wenn eine andere Mensa gewählt wird.
@@ -113,7 +127,8 @@ public class MainActivity extends Activity implements MensaDataListener, Navigat
         item.setChecked(true);
 
         // Von der API werden Daten für diesen Ort angefragt.
-        provider.getMenuForPlace(Places.fromItemId(id));
+        currentPlace = Places.fromItemId(id);
+        provider.getMenuForPlace(currentPlace);
 
         // Der Drawer wird wieder geschlossen
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -87,7 +87,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:text="@string/app_description"
+            android:text="@string/subtitle"
             android:textSize="14sp"
             android:textAlignment="center"
             android:fontFamily="sans-serif-black"

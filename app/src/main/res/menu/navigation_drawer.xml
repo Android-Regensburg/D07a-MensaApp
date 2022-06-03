@@ -23,6 +23,12 @@
             android:checked="true"
             android:icon="@drawable/ic_uni"/>
 
+        <item
+            android:id="@+id/pt_menu"
+            android:title="@string/pt_cafete"
+            android:checked="true"
+            android:icon="@drawable/ic_uni"/>
+
     </group>
 
 </menu>

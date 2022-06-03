@@ -5,12 +5,11 @@
     <string name="tab_label_wednesday">MI</string>
     <string name="tab_label_thurdsay">DO</string>
     <string name="tab_label_friday">FR</string>
-    <string name="app_description">Der aktuelle Speiseplan der Uni-Mensa</string>
+    <string name="subtitle">Der aktuelle Speiseplan der $MENSA.</string>
     <string name="date_range_placeholder">24. bis 28. Mai</string>
     <string name="header_text">Mensa App</string>
     <string name="uni_regensburg">Uni Regensburg</string>
     <string name="oth_regensburg">OTH Regensburg</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="uni_passau">Uni Passau</string>
+    <string name="pt_cafete">PT Cafeteria</string>
 </resources>
