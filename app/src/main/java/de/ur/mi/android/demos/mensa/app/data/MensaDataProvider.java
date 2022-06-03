@@ -25,8 +25,6 @@ public class MensaDataProvider implements WeeklyMenuRequestListener {
     private final MensaDataListener listener;
     // Beinhaltet alle Gerichte die gerade angeboten werden.
     private ArrayList<MensaDish> currentMenu;
-    // Ein Request Objekt wird genutzt um Anfragen an die API zu stellen.
-    private WeeklyMenuRequest task;
 
     public MensaDataProvider(Context context, MensaDataListener listener) {
         this.context = context;
@@ -35,18 +33,18 @@ public class MensaDataProvider implements WeeklyMenuRequestListener {
     }
 
     // Wird aufgerufen, um die neuesten Daten aus der API zu laden.
-    public void update() {
-        task = new WeeklyMenuRequest(context, this);
+    public void initialRequest() {
+        getMenuForPlace(Places.UNI_REGENSBURG);
+    }
+
+    // Wird aufgerufen, um neue Daten für einen neuen Ort aus der API zu laden.
+    public void getMenuForPlace(Places place) {
+        WeeklyMenuRequest task = new WeeklyMenuRequest(context, this, place);
         try {
             task.start();
         } catch (RequestAlreadyStartedException e) {
             e.printStackTrace();
         }
-    }
-
-    // Wird aufgerufen, um neue Daten für einen neuen Ort aus der API zu laden.
-    public void getMenuForPlace(Places place) {
-        task.restartForNewPlace(place);
     }
 
     /**

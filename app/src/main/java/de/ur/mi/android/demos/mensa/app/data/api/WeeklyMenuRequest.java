@@ -39,19 +39,16 @@ public class WeeklyMenuRequest implements Response.Listener<String>, Response.Er
     private boolean wasStarted;
     // Zählt, wie viele der Anfragen an den API-Server bereits beantwortet wurden
     private int responseCounter;
+    // Speichert für welchen Ort die Anfrage gestellt werden soll.
+    private final Places currentPlace;
 
-    private boolean finished;
-
-    private String currentPlace;
-
-    public WeeklyMenuRequest(Context context, WeeklyMenuRequestListener listener) {
+    public WeeklyMenuRequest(Context context, WeeklyMenuRequestListener listener, Places place) {
         this.context = context;
         this.listener = listener;
         this.results = new JSONArray();
         this.wasStarted = false;
-        this.finished = false;
         this.responseCounter = 0;
-        this.currentPlace = Places.UNI_REGENSBURG.getCode();
+        this.currentPlace = place;
     }
 
     public void start() throws RequestAlreadyStartedException {
@@ -61,48 +58,13 @@ public class WeeklyMenuRequest implements Response.Listener<String>, Response.Er
         // Hier erstellen wir die Queue, in der wir die fünf notwendigen Anfragen (Montag bis Freitag) sammeln
         RequestQueue queue = Volley.newRequestQueue(context);
         for (Weekday day : Weekday.values()) {
-            StringRequest request = createVolleyRequestForWeekday(day, this, this);
+            StringRequest request = createVolleyRequestForWeekdayAndPlace(day, currentPlace, this, this);
             queue.add(request);
         }
         // Hier wird die Queue gestartet: Volley beginnt mit der Ausführung der vorbereiteten Anfragen
         queue.start();
         // Ab diesem Zeitpunkt gilt der WeeklyMenuRequest als "vebraucht" und kann nicht noch einmal gestartet werden
         wasStarted = true;
-    }
-
-    /*
-        Diese Methode kann verwendet werden, wenn aktuell keine Anfrage läuft, eine neue Anfrage für den
-        übergebenen Ort zu starten.
-        Die Methode wird daher aufgerufen, wenn im Drawer Menü ein Eintrag angeklickt wird.
-        Nach Abschluss der Anfrage wird der Listener informiert.
-     */
-    public void restartForNewPlace(Places place) {
-        if(wasStarted && finished) {
-            finished = false;
-            // Hier erstellen wir die Queue, in der wir die fünf notwendigen Anfragen (Montag bis Freitag) sammeln
-            RequestQueue queue = Volley.newRequestQueue(context);
-            for (Weekday day : Weekday.values()) {
-                StringRequest request = createVolleyRequestForWeekdayAndPlace(day, place, this, this);
-                queue.add(request);
-            }
-            // Hier wird die Queue gestartet: Volley beginnt mit der Ausführung der vorbereiteten Anfragen
-            queue.start();
-        }
-    }
-
-    /**
-     * Erstellt einen StringeRequest (Volley) für das Erfragen der Speiseplandaten für den übergebenen Wochentag.
-     * Standardmäßig wird die Uni Regensburg verwendet.
-     *
-     * @param weekday         Wochentag, dessen Daten erfragt werden sollen
-     * @param successListener Listener für den erfolgreichen Abschluss der Anfrage
-     * @param errorListener   Listener für Fehler während der Anfrage
-     * @return Der vorbereitete Request (noch nicht gestartet)
-     */
-    private StringRequest createVolleyRequestForWeekday(Weekday weekday, Response.Listener<String> successListener, Response.ErrorListener errorListener) {
-        String url = API_URL.replace("$DAY", weekday.shortName);
-        url = url.replace("$PLACE", Places.UNI_REGENSBURG.code);
-        return new StringRequest(Request.Method.GET, url, successListener, errorListener);
     }
 
     /**
@@ -124,7 +86,6 @@ public class WeeklyMenuRequest implements Response.Listener<String>, Response.Er
 
     private void notifyListenerIfReady() {
         if (responseCounter == Weekday.values().length) {
-            finished = true;
             responseCounter = 0;
             listener.onDataRequestFinished(results);
         }

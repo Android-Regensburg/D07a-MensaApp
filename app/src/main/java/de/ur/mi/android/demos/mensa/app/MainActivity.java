@@ -2,14 +2,10 @@ package de.ur.mi.android.demos.mensa.app;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.RecyclerView;
@@ -94,7 +90,7 @@ public class MainActivity extends Activity implements MensaDataListener, Navigat
     // Der DataProvider wird initialisiert und die Daten von der API angefragt.
     private void initData() {
         provider = new MensaDataProvider(getApplicationContext(), this);
-        provider.update();
+        provider.initialRequest();
     }
 
     /*
