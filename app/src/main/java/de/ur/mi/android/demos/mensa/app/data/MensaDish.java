@@ -1,5 +1,7 @@
 package de.ur.mi.android.demos.mensa.app.data;
 
+import androidx.annotation.NonNull;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -38,5 +40,18 @@ public class MensaDish {
         String categoryFromJSON = object.getString("category");
         Category category = Category.fromValue(categoryFromJSON);
         return new MensaDish(name, onDay, category);
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "Name of Dish: " +
+                name +
+                "\n" +
+                "Day of Dish" +
+                onDay.shortName +
+                "\n" +
+                "Category of Dish: " +
+                category.label;
     }
 }
