@@ -3,16 +3,16 @@ package de.ur.mi.android.demos.mensa.app.data.api;
 import android.content.Context;
 import android.util.Log;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import de.ur.mi.android.demos.mensa.app.data.helper.Places;
 import de.ur.mi.android.demos.mensa.app.data.helper.Weekday;
@@ -26,9 +26,10 @@ import de.ur.mi.android.demos.mensa.app.data.helper.Weekday;
  * Antwort des Server eingegangen ist. Achtung: Das funktioniert nur deshalb sicher, da die onReponse-Methode
  * der Volley-Listener automatisch im Main Thread (UI Thread) der Anwendung ausgeführt wird!
  */
-public class WeeklyMenuRequest implements Response.Listener<JSONArray>, Response.ErrorListener {
+public class WeeklyMenuRequest implements Response.Listener<JSONObject>, Response.ErrorListener {
 
-    private static final String API_URL = "https://mensa.software-engineering.education/mensa/$PLACE/$DAY";
+    // private static final String API_URL = "https://mensa.software-engineering.education/mensa/$PLACE/$DAY";
+    private static final String API_URL = "https://mensa.v2.software-engineering.education/$PLACE/$DAY";
 
     // Kontext der App, der zur Verwendung des Volley-Frameworks benötigt wird
     private final Context context;
@@ -59,7 +60,7 @@ public class WeeklyMenuRequest implements Response.Listener<JSONArray>, Response
         // Hier erstellen wir die Queue, in der wir die fünf notwendigen Anfragen (Montag bis Freitag) sammeln
         RequestQueue queue = Volley.newRequestQueue(context);
         for (Weekday day : Weekday.values()) {
-            JsonArrayRequest request = createVolleyRequestForWeekdayAndPlace(day, currentPlace, this, this);
+            JsonObjectRequest request = createVolleyRequestForWeekdayAndPlace(day, currentPlace, this, this);
             queue.add(request);
         }
         // Hier wird die Queue gestartet: Volley beginnt mit der Ausführung der vorbereiteten Anfragen
@@ -78,10 +79,10 @@ public class WeeklyMenuRequest implements Response.Listener<JSONArray>, Response
      * @param errorListener   Listener für Fehler während der Anfrage
      * @return Der vorbereitete Request (noch nicht gestartet)
      */
-    private JsonArrayRequest createVolleyRequestForWeekdayAndPlace(Weekday weekday, Places place, Response.Listener<JSONArray> successListener, Response.ErrorListener errorListener) {
-        String url = API_URL.replace("$DAY", weekday.shortName);
+    private JsonObjectRequest createVolleyRequestForWeekdayAndPlace(Weekday weekday, Places place, Response.Listener<JSONObject> successListener, Response.ErrorListener errorListener) {
+        String url = API_URL.replace("$DAY", weekday.name);
         url = url.replace("$PLACE", place.code);
-        return new JsonArrayRequest(url, successListener, errorListener);
+        return new JsonObjectRequest(url, successListener, errorListener);
     }
 
 
@@ -98,7 +99,7 @@ public class WeeklyMenuRequest implements Response.Listener<JSONArray>, Response
         neue Daten verfügbar sind.
      */
     @Override
-    public void onResponse(JSONArray response) {
+    public void onResponse(JSONObject response) {
         if (responseCounter == 0) {
             this.results = new JSONArray();
         }
@@ -106,11 +107,14 @@ public class WeeklyMenuRequest implements Response.Listener<JSONArray>, Response
         // Wenn eine der Serveranfragen beantwortet wurde ...
         try {
             // .. versuchen wir die JSON-formatierten Speisen aus dem erhaltenen Array auszulesen
-            // JSONArray resultsForOneDay = new JSONArray(response);
-            Log.d("Mensa", response.toString());
-            for (int i = 0; i < response.length(); i++) {
+            // Log.d("Mensa", "Got from API: " + response.toString());
+
+            JSONArray dataArray = response.getJSONArray("data");
+            // Log.d("Mensa", "Data form API: " + dataArray.toString());
+
+            for (int i = 0; i < dataArray.length(); i++) {
                 // ... und als einzelne JSONObjekte in dem zentralen JSONArray zu speichern
-                results.put(response.getJSONObject(i));
+                results.put(dataArray.getJSONObject(i));
             }
         } catch (JSONException e) {
             e.printStackTrace();

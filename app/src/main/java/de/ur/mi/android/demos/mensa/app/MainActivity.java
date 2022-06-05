@@ -41,7 +41,7 @@ public class MainActivity extends Activity implements MensaDataListener, Navigat
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        currentPlace = Places.UNI_REGENSBURG;
+        currentPlace = Places.UNI_REGENSBURG_MENSA;
         initUI();
         initData();
         setNavigationViewListener();
@@ -126,6 +126,11 @@ public class MainActivity extends Activity implements MensaDataListener, Navigat
                 removeLoadingAndUpdate();
             }
         }, 2, 2, TimeUnit.SECONDS);
+    }
+
+    @Override
+    public void onListEmptied() {
+        showMenuForDay(Weekday.currentOrNearest());
     }
 
     /*

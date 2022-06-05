@@ -10,22 +10,22 @@ import java.time.LocalDate;
  * der Wochentage verwendet wird.
  */
 public enum Weekday {
-    MONDAY("mo"),
-    TUESDAY("di"),
-    WEDNESDAY("mi"),
-    THURSDAY("do"),
-    FRIDAY("fr");
+    MONDAY("Monday"),
+    TUESDAY("Tuesday"),
+    WEDNESDAY("Wednesday"),
+    THURSDAY("Thursday"),
+    FRIDAY("Friday");
 
-    public final String shortName;
+    public final String name;
 
-    Weekday(String shortName) {
-        this.shortName = shortName;
+    Weekday(String name) {
+        this.name = name;
     }
 
     // Gibt den Wochentag zurück, der durch das übergebene Kürzel repräsentiert wird
     public static Weekday fromShortName(String shortName) {
         for (Weekday day : Weekday.values()) {
-            if (day.shortName.equals(shortName.toLowerCase())) {
+            if (day.name.equals(shortName)) {
                 return day;
             }
         }

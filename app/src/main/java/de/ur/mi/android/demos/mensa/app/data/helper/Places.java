@@ -13,10 +13,10 @@ import de.ur.mi.android.demos.mensa.app.R;
  */
 public enum Places {
 
-    UNI_REGENSBURG("uni", "Mensa der Uni Regensburg"),
-    OTH_REGENSBURG("oth", "Mensa der OTH Regensburg"),
-    UNI_PASSAU("passau", "Mensa der Uni Passau"),
-    PT_CAFETE("pt", "PT Cafeteria an der Uni Regensburg");
+    UNI_REGENSBURG_MENSA("Regensburg/Mensa", "Mensa der Uni Regensburg"),
+    OTH_REGENSBURG("Regensburg/Seybothstrasse-mittags", "Mensa der OTH Regensburg"),
+    UNI_PASSAU("Passau/Mensa", "Mensa der Uni Passau"),
+    PT_CAFETE("Regensburg/Cafeteria-PT", "PT Cafeteria an der Uni Regensburg");
 
     public final String code;
     public final String label;
@@ -36,7 +36,7 @@ public enum Places {
 
     public static Places fromLongName(String name) {
         if(name.equals("Uni Regensburg")) {
-            return Places.UNI_REGENSBURG;
+            return Places.UNI_REGENSBURG_MENSA;
         } else if (name.equals("OTH Regensburg")) {
             return Places.OTH_REGENSBURG;
         } else if (name.equals("Uni Passau")) {
@@ -45,12 +45,12 @@ public enum Places {
             return Places.PT_CAFETE;
         }
 
-        return Places.UNI_REGENSBURG;
+        return Places.UNI_REGENSBURG_MENSA;
     }
 
     public static Places fromItemId(int id) {
         if (id == R.id.regensburg_menu) {
-            return Places.UNI_REGENSBURG;
+            return Places.UNI_REGENSBURG_MENSA;
         } else if (id == R.id.oth_menu) {
             return Places.OTH_REGENSBURG;
         } else if(id == R.id.passau_menu) {
@@ -59,7 +59,7 @@ public enum Places {
             return Places.PT_CAFETE;
         }
 
-        return Places.UNI_REGENSBURG;
+        return Places.UNI_REGENSBURG_MENSA;
     }
 
 }

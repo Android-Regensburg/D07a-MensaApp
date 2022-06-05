@@ -1,5 +1,7 @@
 package de.ur.mi.android.demos.mensa.app.data;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import org.json.JSONException;
@@ -38,7 +40,9 @@ public class MensaDish {
         String dayFromJSON = object.getString("day");
         Weekday onDay = Weekday.fromShortName(dayFromJSON);
         String categoryFromJSON = object.getString("category");
+        Log.d("MensaCategory", "Category: " + categoryFromJSON);
         Category category = Category.fromValue(categoryFromJSON);
+        Log.d("MensaCategory", "Category name: " + category.label);
         return new MensaDish(name, onDay, category);
     }
 
@@ -48,8 +52,8 @@ public class MensaDish {
         return "Name of Dish: " +
                 name +
                 "\n" +
-                "Day of Dish" +
-                onDay.shortName +
+                "Day of Dish: " +
+                onDay.name +
                 "\n" +
                 "Category of Dish: " +
                 category.label;

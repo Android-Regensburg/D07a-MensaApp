@@ -34,11 +34,13 @@ public class MensaDataProvider implements WeeklyMenuRequestListener {
 
     // Wird aufgerufen, um die neuesten Daten aus der API zu laden.
     public void initialRequest() {
-        getMenuForPlace(Places.UNI_REGENSBURG);
+        getMenuForPlace(Places.UNI_REGENSBURG_MENSA);
     }
 
     // Wird aufgerufen, um neue Daten für einen neuen Ort aus der API zu laden.
     public void getMenuForPlace(Places place) {
+        currentMenu = new ArrayList<>();
+        listener.onListEmptied();
         WeeklyMenuRequest task = new WeeklyMenuRequest(context, this, place);
         try {
             task.start();
@@ -70,11 +72,14 @@ public class MensaDataProvider implements WeeklyMenuRequestListener {
      */
     @Override
     public void onDataRequestFinished(JSONArray results) {
+        //Log.d("Mensa", "Total API data: " + results.toString());
         currentMenu = new ArrayList<>();
         for (int i = 0; i < results.length(); i++) {
             try {
                 MensaDish dish = MensaDish.fromJSONObject(results.getJSONObject(i));
-                currentMenu.add(dish);
+                // TODO: Kategorie reparieren, mehr Mensen
+                Log.d("Mensa", "New Dish: " + dish.toString());
+                if (!dish.name.equals("")) currentMenu.add(dish);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

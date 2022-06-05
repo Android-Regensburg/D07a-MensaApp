@@ -1,5 +1,7 @@
 package de.ur.mi.android.demos.mensa.app.data.helper;
 
+import android.util.Log;
+
 import java.util.Arrays;
 
 /**
@@ -11,11 +13,11 @@ import java.util.Arrays;
  */
 public enum Category {
     // Hauptgericht
-    MAIN(new String[]{"HG1", "HG2", "HG3"}, "Hauptgericht"),
+    MAIN(new String[]{"HG1", "HG2", "HG3", "HG4"}, "Hauptgericht"),
     // Beilage
-    SIDE(new String[]{"B1", "B2", "B3", "B4"}, "Beilage"),
+    SIDE(new String[]{"B1", "B2", "B3", "B4", "B5", "Suppe"}, "Beilage"),
     // Dessert/Nachtisch
-    DESSERT(new String[]{"N1", "N2"}, "Dessert");
+    DESSERT(new String[]{"N1", "N2", "N3"}, "Dessert");
 
     private final String[] matchingValues;
     public final String label;
@@ -23,18 +25,19 @@ public enum Category {
     Category(String[] matchingValues, String label) {
         this.matchingValues = matchingValues;
         this.label = label;
-        Arrays.sort(matchingValues);
+        Arrays.sort(this.matchingValues);
     }
 
     // Gibt die Kategorie zurück, deren "matchingValues"-Array den übergebenen Wert beinhaltet
     public static Category fromValue(String value) {
         for (Category category : Category.values()) {
             int index = Arrays.binarySearch(category.matchingValues, value);
-            if (index != -1) {
+            Log.d("MensaCategory", "Category: " + category.label + "\tIndex: " + index);
+            if (index > -1) {
                 return category;
             }
         }
-        return null;
+        return SIDE;
     }
 }
 
