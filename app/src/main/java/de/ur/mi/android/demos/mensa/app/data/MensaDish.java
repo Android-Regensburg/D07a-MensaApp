@@ -40,9 +40,7 @@ public class MensaDish {
         String dayFromJSON = object.getString("day");
         Weekday onDay = Weekday.fromShortName(dayFromJSON);
         String categoryFromJSON = object.getString("category");
-        Log.d("MensaCategory", "Category: " + categoryFromJSON);
         Category category = Category.fromValue(categoryFromJSON);
-        Log.d("MensaCategory", "Category name: " + category.label);
         return new MensaDish(name, onDay, category);
     }
 

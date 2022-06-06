@@ -33,9 +33,8 @@ public class MainActivity extends Activity implements MensaDataListener, Navigat
     private MensaDataAdapter adapter;
     // Das Tablayout bietet die Auswahl der Wochentage an.
     private TabLayout daySelector;
-
     private Places currentPlace;
-
+    // Dieser Executor dient der Verzögerung, so dass der Ladebalken länger angezeigt wird
     private ScheduledExecutorService executor;
 
     @Override

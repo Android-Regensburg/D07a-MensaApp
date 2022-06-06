@@ -72,13 +72,10 @@ public class MensaDataProvider implements WeeklyMenuRequestListener {
      */
     @Override
     public void onDataRequestFinished(JSONArray results) {
-        //Log.d("Mensa", "Total API data: " + results.toString());
         currentMenu = new ArrayList<>();
         for (int i = 0; i < results.length(); i++) {
             try {
                 MensaDish dish = MensaDish.fromJSONObject(results.getJSONObject(i));
-                // TODO: Kategorie reparieren, mehr Mensen
-                Log.d("Mensa", "New Dish: " + dish.toString());
                 if (!dish.name.equals("")) currentMenu.add(dish);
             } catch (JSONException e) {
                 e.printStackTrace();

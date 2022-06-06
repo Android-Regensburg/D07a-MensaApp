@@ -32,7 +32,6 @@ public enum Category {
     public static Category fromValue(String value) {
         for (Category category : Category.values()) {
             int index = Arrays.binarySearch(category.matchingValues, value);
-            Log.d("MensaCategory", "Category: " + category.label + "\tIndex: " + index);
             if (index > -1) {
                 return category;
             }

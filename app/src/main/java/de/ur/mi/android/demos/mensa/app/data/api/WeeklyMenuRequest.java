@@ -106,11 +106,8 @@ public class WeeklyMenuRequest implements Response.Listener<JSONObject>, Respons
 
         // Wenn eine der Serveranfragen beantwortet wurde ...
         try {
-            // .. versuchen wir die JSON-formatierten Speisen aus dem erhaltenen Array auszulesen
-            // Log.d("Mensa", "Got from API: " + response.toString());
-
+            // .. versuchen wir die JSON-formatierten Speisen aus dem erhaltenen Objekt auszulesen
             JSONArray dataArray = response.getJSONArray("data");
-            // Log.d("Mensa", "Data form API: " + dataArray.toString());
 
             for (int i = 0; i < dataArray.length(); i++) {
                 // ... und als einzelne JSONObjekte in dem zentralen JSONArray zu speichern
