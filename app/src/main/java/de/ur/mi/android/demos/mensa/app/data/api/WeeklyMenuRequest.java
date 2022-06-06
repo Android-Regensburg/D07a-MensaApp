@@ -108,10 +108,11 @@ public class WeeklyMenuRequest implements Response.Listener<JSONObject>, Respons
         try {
             // .. versuchen wir die JSON-formatierten Speisen aus dem erhaltenen Objekt auszulesen
             JSONArray dataArray = response.getJSONArray("data");
-
-            for (int i = 0; i < dataArray.length(); i++) {
-                // ... und als einzelne JSONObjekte in dem zentralen JSONArray zu speichern
-                results.put(dataArray.getJSONObject(i));
+            if (dataArray.length() != 0) {
+                for (int i = 0; i < dataArray.length(); i++) {
+                    // ... und als einzelne JSONObjekte in dem zentralen JSONArray zu speichern
+                    results.put(dataArray.getJSONObject(i));
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();

@@ -141,6 +141,7 @@ public class MainActivity extends Activity implements MensaDataListener, Navigat
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                daySelector.selectTab(daySelector.getTabAt(currentDay.ordinal()));
                 showMenuForDay(currentDay);
             }
         });
