@@ -17,7 +17,7 @@ public class MainActivity extends Activity implements NavigationView.OnNavigatio
     // Mit dieser URL können Anfragen an die API gestellt werden, dazu müssen $PLACE und $DAY durch passende
     // Texte ausgetauscht werden.
     // Sie dürfen/sollen diese URL an eine passendere Stelle verschieben!
-    private static final String API_URL = "https://mensa.software-engineering.education/mensa/$PLACE/$DAY";
+    private static final String API_URL = "https://mensa.v2.software-engineering.education/$PLACE/$DAY";
 
     // Der MensaAdapter verbindet das UI mit der internen Repräsentation des Menüs
     private MensaDataAdapter adapter;

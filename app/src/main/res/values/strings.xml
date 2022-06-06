@@ -8,8 +8,13 @@
     <string name="app_description">Der aktuelle Speiseplan der Uni-Mensa</string>
     <string name="date_range_placeholder">24. bis 28. Mai</string>
     <string name="header_text">Mensa App</string>
-    <string name="uni_regensburg">Uni Regensburg</string>
-    <string name="oth_regensburg">OTH Regensburg</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="uni_regensburg">Uni Regensburg - Mensa</string>
+    <string name="pt_cafete">Uni Regensburg - PT Cafeteria</string>
+    <string name="chemie_cafete">Uni Regensburg - Chemie Cafeteria</string>
+    <string name="oth_regensburg">OTH Regensburg - Mensa</string>
+    <string name="uni_passau">Uni Passau - Mensa</string>
+    <string name="uni_landshut">HS Landshut - Mensa</string>
+    <string name="th_deggendorf">TH Deggendorf - Mensateria</string>
+    <string name="tum_straubing">Straubing - Donaucafe</string>
+    <string name="thd_pfarrkirchen">THD Pfarrkirchen - Cafeteria</string>
 </resources>

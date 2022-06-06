@@ -12,8 +12,50 @@
             android:icon="@drawable/ic_uni"/>
 
         <item
+            android:id="@+id/pt_menu"
+            android:title="@string/pt_cafete"
+            android:checked="true"
+            android:icon="@drawable/ic_uni"/>
+
+        <item
+            android:id="@+id/menu_chemie"
+            android:title="@string/chemie_cafete"
+            android:checked="true"
+            android:icon="@drawable/ic_uni"/>
+
+        <item
             android:id="@+id/oth_menu"
             android:title="@string/oth_regensburg"
+            android:checked="true"
+            android:icon="@drawable/ic_uni"/>
+
+        <item
+            android:id="@+id/passau_menu"
+            android:title="@string/uni_passau"
+            android:checked="true"
+            android:icon="@drawable/ic_uni"/>
+
+        <item
+            android:id="@+id/menu_landshut"
+            android:title="@string/uni_landshut"
+            android:checked="true"
+            android:icon="@drawable/ic_uni"/>
+
+        <item
+            android:id="@+id/menu_deggendorf"
+            android:title="@string/th_deggendorf"
+            android:checked="true"
+            android:icon="@drawable/ic_uni"/>
+
+        <item
+            android:id="@+id/menu_straubing"
+            android:title="@string/tum_straubing"
+            android:checked="true"
+            android:icon="@drawable/ic_uni"/>
+
+        <item
+            android:id="@+id/menu_pfarrkirchen"
+            android:title="@string/thd_pfarrkirchen"
             android:checked="true"
             android:icon="@drawable/ic_uni"/>
 
