@@ -109,6 +109,6 @@ Wahrscheinlich werden Sie feststellen, dass der Ladebalken nur sehr kurz im UI z
 Aktuell wird bei uns beim Start der Anwendung immer zuerst die Mensa der Uni Regensburg angezeigt. Das ist nicht unbedingt sinnvoll, besser wäre es, wenn die zuletzt geöffnete Mensa beim nächsten Start wieder als erstes ausgewählt ist. Das könnten Sie z.B. über `SharedPreferences`, wie sie schon letzte Woche verwendet wurden, erreichen. An geeigneter Stelle muss dann gespeichert werden, welche Mensa aktuell geöffnet ist. Diese Information muss beim Start der Activity abgerufen und die initiale Anfrage an die API sowie die im NavigationDrawer gewählte Location entsprechend angepasst werden.
 
 ## Screenshots
-|  Menü aus Regensburg  | Navigation zwischen Mensen |
-|:------:|:-------:|
-| ![Menü aus Regensburg](./docs/Menu.png) | ![Navigation zwischen Mensen](./docs/Drawer.png) | 
+|  Menü aus Regensburg  | Navigation zwischen Mensen | Ladebalken beim Warten auf Antworten der API |
+|:-------:|:-------:|:-------:|
+| ![Menü aus Regensburg](./docs/Menu.png) | ![Navigation zwischen Mensen](./docs/Drawer.png) | ![Ladebalken](./docs/ProgressBar.png) |
